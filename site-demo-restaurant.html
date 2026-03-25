@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Osteria Notte — Restaurant Italien</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0a0805;
+    --creme: #f5efe6;
+    --or: #c9a96e;
+    --or-clair: #e8d5a3;
+    --brun: #2a1f14;
+    --texte: #d4c4a8;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--noir);
+    color: var(--texte);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CURSEUR CUSTOM */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--or);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid rgba(201,169,110,0.4);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s ease, width 0.3s, height 0.3s;
+  }
+
+  /* GRAIN */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,8,5,0.95), transparent);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--or);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    color: var(--texte);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--or); }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 70% 50%, rgba(201,169,110,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(42,31,20,0.8) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0805 0%, #1a1208 50%, #0a0805 100%);
+  }
+  .hero-line {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 45%;
+    overflow: hidden;
+  }
+  .hero-img-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #2a1f14 0%, #1a1208 40%, #3d2b1a 100%);
+    position: relative;
+  }
+  .hero-img-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(201,169,110,0.03) 20px, rgba(201,169,110,0.03) 21px);
+  }
+  .plate-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180px; height: 180px;
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    animation: slowRotate 20s linear infinite;
+  }
+  @keyframes slowRotate { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  .hero-overlay {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 45%;
+    background: linear-gradient(to right, var(--noir) 0%, transparent 30%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 60px;
+    max-width: 640px;
+  }
+  .hero-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--or);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--or);
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    color: var(--creme);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--or);
+  }
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(212,196,168,0.7);
+    max-width: 420px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+  }
+  .btn-primary {
+    padding: 16px 40px;
+    background: var(--or);
+    color: var(--noir);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .btn-primary:hover {
+    background: var(--or-clair);
+    transform: translateY(-2px);
+  }
+  .btn-secondary {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,169,110,0.4);
+    padding-bottom: 4px;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .btn-secondary:hover { border-color: var(--or); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(212,196,168,0.4);
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards;
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: rgba(201,169,110,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--or);
+    animation: scrollLine 2s 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0% { left: -100%; }
+    50% { left: 0%; }
+    100% { left: 100%; }
+  }
+
+  /* SECTION COMMUNE */
+  section { padding: 120px 60px; }
+  .section-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    color: var(--or);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-tag::before { content: ''; width: 30px; height: 1px; background: var(--or); }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: var(--creme);
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  h2 em { font-style: italic; color: var(--or); }
+
+  /* ABOUT */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(212,196,168,0.7);
+    margin-bottom: 20px;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 50px;
+    padding-top: 50px;
+    border-top: 1px solid rgba(201,169,110,0.15);
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--or);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(212,196,168,0.5);
+    margin-top: 6px;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-card {
+    background: linear-gradient(135deg, #1a1208, #2a1f14);
+    border: 1px solid rgba(201,169,110,0.12);
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(201,169,110,0.05), transparent 60%);
+  }
+  .about-card-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--creme);
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  .about-card-author {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+  .about-card-deco {
+    position: absolute;
+    bottom: -20px; right: -20px;
+    font-size: 8rem;
+    opacity: 0.04;
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+    color: var(--or);
+  }
+
+  /* MENU */
+  .menu-section {
+    background: linear-gradient(180deg, var(--noir), #0f0c07, var(--noir));
+    max-width: 100%;
+  }
+  .menu-header { text-align: center; margin-bottom: 80px; }
+  .menu-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 60px;
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+  }
+  .tab {
+    padding: 16px 40px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(212,196,168,0.5);
+    cursor: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.3s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .tab.active, .tab:hover {
+    color: var(--or);
+    border-bottom-color: var(--or);
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .menu-item {
+    padding: 30px 40px;
+    border: 1px solid rgba(201,169,110,0.06);
+    background: rgba(255,255,255,0.01);
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .menu-item:hover {
+    background: rgba(201,169,110,0.04);
+    border-color: rgba(201,169,110,0.15);
+  }
+  .menu-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .menu-item-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--creme);
+  }
+  .menu-item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--or);
+    letter-spacing: 0.05em;
+  }
+  .menu-item-desc {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: rgba(212,196,168,0.5);
+  }
+
+  /* GALERIE */
+  .gallery-section { background: var(--noir); }
+  .gallery-header { margin-bottom: 60px; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 260px 260px;
+    gap: 4px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .gallery-item {
+    background: linear-gradient(135deg, #1a1208, #2a1f14);
+    overflow: hidden;
+    position: relative;
+    cursor: none;
+  }
+  .gallery-item:first-child { grid-row: 1 / 3; }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(201,169,110,0.1);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gallery-emoji {
+    font-size: 3rem;
+    opacity: 0.6;
+  }
+  .gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(201,169,110,0.02) 30px,
+      rgba(201,169,110,0.02) 31px
+    );
+  }
+  /* Différentes teintes pour chaque case */
+  .gallery-item:nth-child(1) { background: linear-gradient(135deg, #2a1f14, #1a1208); }
+  .gallery-item:nth-child(2) { background: linear-gradient(225deg, #3d2b1a, #1a1208); }
+  .gallery-item:nth-child(3) { background: linear-gradient(135deg, #1a1510, #2a2015); }
+  .gallery-item:nth-child(4) { background: linear-gradient(45deg, #251c10, #1a1208); }
+  .gallery-item:nth-child(5) { background: linear-gradient(315deg, #2d2010, #150f08); }
+
+  /* RESERVATION */
+  .reservation-section {
+    text-align: center;
+    background: linear-gradient(180deg, var(--noir), #0f0a04, var(--noir));
+    position: relative;
+    overflow: hidden;
+  }
+  .reservation-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,169,110,0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .reservation-section h2 { margin-bottom: 16px; }
+  .reservation-section p {
+    color: rgba(212,196,168,0.6);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 480px;
+    margin: 0 auto 50px;
+  }
+  .resa-form {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 800px;
+    margin: 0 auto 30px;
+  }
+  .resa-input {
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,169,110,0.2);
+    color: var(--texte);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+    cursor: none;
+    min-width: 160px;
+  }
+  .resa-input:focus { border-color: rgba(201,169,110,0.5); }
+  .resa-input::placeholder { color: rgba(212,196,168,0.3); }
+  .phone-line {
+    margin-top: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: rgba(212,196,168,0.4);
+  }
+  .phone-line a {
+    color: var(--or);
+    text-decoration: none;
+    margin-left: 8px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 60px;
+    border-top: 1px solid rgba(201,169,110,0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--or);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .footer-tagline {
+    font-size: 0.85rem;
+    color: rgba(212,196,168,0.4);
+    line-height: 1.7;
+  }
+  .footer-col h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 20px;
+  }
+  .footer-col p, .footer-col a {
+    font-size: 0.9rem;
+    color: rgba(212,196,168,0.5);
+    line-height: 1.9;
+    text-decoration: none;
+    display: block;
+    transition: color 0.3s;
+    cursor: none;
+  }
+  .footer-col a:hover { color: var(--or); }
+  .footer-bottom {
+    padding: 24px 60px;
+    border-top: 1px solid rgba(201,169,110,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 0.75rem;
+    color: rgba(212,196,168,0.25);
+    letter-spacing: 0.05em;
+  }
+  .footer-credit {
+    font-size: 0.7rem;
+    color: rgba(201,169,110,0.3);
+    letter-spacing: 0.1em;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .hero-content { padding: 0 24px; }
+    .hero-line { display: none; }
+    .about { grid-template-columns: 1fr; gap: 50px; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:first-child { grid-row: auto; }
+    footer { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px; }
+    .footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; }
+    .scroll-hint { left: 24px; }
+    .resa-form { flex-direction: column; align-items: center; }
+    .resa-input { width: 100%; max-width: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Osteria Notte</div>
+  <ul class="nav-links">
+    <li><a href="#about">Histoire</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Galerie</a></li>
+    <li><a href="#reservation">Réservation</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line">
+    <div class="hero-img-placeholder">
+      <div class="plate-icon">🍝</div>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Paris · Depuis 2008</div>
+    <h1>La <em>cuisine</em><br>qui parle<br>à l'âme</h1>
+    <p class="hero-desc">Une trattoria romaine au cœur de Paris. Des recettes transmises de génération en génération, sublimées par les meilleurs produits du marché.</p>
+    <div class="hero-ctas">
+      <a href="#reservation" class="btn-primary">Réserver une table</a>
+      <a href="#menu" class="btn-secondary">Voir le menu</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Défiler
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about">
+    <div class="about-text">
+      <div class="section-tag">Notre histoire</div>
+      <h2>Une <em>passion</em><br>transmise</h2>
+      <p>Fondée par Marco et Elena Ferretti, l'Osteria Notte est née d'un rêve simple : recréer à Paris les saveurs de leur enfance romaine. Chaque assiette raconte une histoire.</p>
+      <p>Nos pâtes sont faites maison chaque matin. Nos vins sont sélectionnés directement auprès de petits vignerons italiens. Ici, rien n'est laissé au hasard.</p>
+      <div class="about-stats">
+        <div>
+          <span class="stat-num">16</span>
+          <div class="stat-label">Années d'histoire</div>
+        </div>
+        <div>
+          <span class="stat-num">3</span>
+          <div class="stat-label">Étoiles au Guide</div>
+        </div>
+        <div>
+          <span class="stat-num">100%</span>
+          <div class="stat-label">Produits frais</div>
+        </div>
+        <div>
+          <span class="stat-num">48</span>
+          <div class="stat-label">Références de vins</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="about-card">
+        <div class="about-card-quote">"Cucinare è un atto d'amore — cuisiner est un acte d'amour."</div>
+        <div class="about-card-author">— Marco Ferretti, Chef fondateur</div>
+        <div class="about-card-deco">"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="menu-section">
+  <div class="menu-header">
+    <div class="section-tag" style="justify-content:center;">La carte</div>
+    <h2>Des saveurs <em>authentiques</em></h2>
+  </div>
+  <div class="menu-tabs">
+    <button class="tab active" onclick="setTab(this)">Antipasti</button>
+    <button class="tab" onclick="setTab(this)">Primi</button>
+    <button class="tab" onclick="setTab(this)">Secondi</button>
+    <button class="tab" onclick="setTab(this)">Dolci</button>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <span class="menu-item-name">Burrata di bufala</span>
+        <span class="menu-item-price">18€</span>
+      </div>
+      <p class="menu-item-desc">Burrata crémeuse, tomates cerises rôties, huile d'olive AOP et basilic frais</p>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <span class="menu-item-name">Carpaccio di manzo</span>
+        <span class="menu-item-price">22€</span>
+      </div>
+      <p class="menu-item-desc">Fines tranches de bœuf, roquette sauvage, copeaux de parmesan 36 mois</p>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <span class="menu-item-name">Vitello tonnato</span>
+        <span class="menu-item-price">20€</span>
+      </div>
+      <p class="menu-item-desc">Veau rôti tranché fin, sauce thon-câpres, gremolata de citron</p>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <span class="menu-item-name">Polpo alla griglia</span>
+        <span class="menu-item-price">24€</span>
+      </div>
+      <p class="menu-item-desc">Poulpe grillé, purée de pommes de terre fumée, olives taggiasche, câpres</p>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <span class="menu-item-name">Tartare di salmone</span>
+        <span class="menu-item-price">19€</span>
+      </div>
+      <p class="menu-item-desc">Saumon d'Écosse mariné à l'aneth, avocat, crème fraîche au citron vert</p>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <span class="menu-item-name">Crostini misti</span>
+        <span class="menu-item-price">14€</span>
+      </div>
+      <p class="menu-item-desc">Sélection de crostini maison : foie de volaille, tapenade noire, ricotta et truffe</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="gallery" class="gallery-section">
+  <div class="gallery-header">
+    <div class="section-tag">L'atmosphère</div>
+    <h2>Un cadre <em>hors du temps</em></h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <div class="gallery-overlay"><span class="gallery-emoji">🕯️</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-overlay"><span class="gallery-emoji">🍷</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-overlay"><span class="gallery-emoji">🍝</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-overlay"><span class="gallery-emoji">🫒</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-overlay"><span class="gallery-emoji">🌿</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation" class="reservation-section">
+  <div class="section-tag" style="justify-content:center;">Venez nous rendre visite</div>
+  <h2>Réserver <em>votre table</em></h2>
+  <p>Nous accueillons jusqu'à 40 couverts par service. Réservation recommandée, surtout le week-end.</p>
+  <div class="resa-form">
+    <input class="resa-input" type="text" placeholder="Votre nom">
+    <input class="resa-input" type="date">
+    <input class="resa-input" type="number" placeholder="Nombre de couverts" min="1" max="10">
+    <a href="#" class="btn-primary" style="padding:16px 32px;display:inline-block;">Réserver</a>
+  </div>
+  <p class="phone-line">Ou par téléphone :<a href="tel:+33123456789">01 23 45 67 89</a></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Osteria Notte</div>
+    <p class="footer-tagline">Une trattoria romaine<br>au cœur de Paris depuis 2008.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Horaires</h4>
+    <p>Lun – Jeu : 12h – 14h30, 19h – 22h30</p>
+    <p>Ven – Sam : 12h – 15h, 19h – 23h</p>
+    <p>Dimanche : fermé</p>
+  </div>
+  <div class="footer-col">
+    <h4>Nous trouver</h4>
+    <p>14 rue des Abbesses<br>75018 Paris</p>
+    <a href="tel:+33123456789">01 23 45 67 89</a>
+    <a href="mailto:contact@osterianotte.fr">contact@osterianotte.fr</a>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2024 Osteria Notte — Tous droits réservés</p>
+  <p class="footer-credit">Site réalisé avec soin</p>
+</div>
+
+<script>
+  // Curseur custom
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.transform = `translate(${mx-4}px, ${my-4}px)`;
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx-16}px, ${ry-16}px)`;
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Tabs menu
+  function setTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Intersection Observer pour animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.menu-item, .about-card, .gallery-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
