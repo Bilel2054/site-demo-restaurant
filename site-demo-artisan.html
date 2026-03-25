@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProFix — Plombier & Chauffagiste Paris</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Mulish:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bleu:#1a3a5c;
+  --bleu-vif:#2563eb;
+  --bleu-clair:#dbeafe;
+  --orange:#f97316;
+  --blanc:#ffffff;
+  --gris:#f8fafc;
+  --gris2:#f1f5f9;
+  --texte:#475569;
+  --titre:#0f172a;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--blanc);color:var(--texte);font-family:'Mulish',sans-serif;font-weight:400;overflow-x:hidden;}
+
+/* URGENCE BANNER */
+.urgence{background:var(--orange);padding:10px 20px;text-align:center;font-size:.85rem;font-weight:600;color:var(--blanc);letter-spacing:.05em;}
+.urgence a{color:var(--blanc);text-decoration:underline;}
+
+/* NAV */
+nav{background:var(--bleu);padding:0 60px;height:72px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;}
+.logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--blanc);letter-spacing:-.02em;}
+.logo span{color:var(--orange);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:.85rem;letter-spacing:.08em;color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--blanc);}
+.nav-tel{display:flex;align-items:center;gap:10px;background:var(--orange);padding:12px 24px;border-radius:8px;text-decoration:none;transition:background .2s;}
+.nav-tel:hover{background:#ea6c0a;}
+.nav-tel span{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--blanc);}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--bleu) 0%,#0f2744 100%);padding:100px 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;right:-100px;top:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(37,99,235,.2),transparent 70%);}
+.hero::after{content:'';position:absolute;left:0;bottom:0;right:0;height:4px;background:linear-gradient(to right,var(--orange),var(--bleu-vif));}
+.hero-trust{display:flex;gap:24px;margin-bottom:28px;flex-wrap:wrap;}
+.trust-badge{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.6);letter-spacing:.05em;}
+.trust-badge .dot{width:6px;height:6px;background:var(--orange);border-radius:50%;}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:800;color:var(--blanc);line-height:1.05;letter-spacing:-.02em;margin-bottom:24px;}
+h1 span{color:var(--orange);}
+.hero-desc{font-size:1rem;line-height:1.8;color:rgba(255,255,255,.7);max-width:460px;margin-bottom:40px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-orange{padding:16px 36px;background:var(--orange);color:var(--blanc);font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;text-decoration:none;border-radius:8px;transition:all .2s;}
+.btn-orange:hover{background:#ea6c0a;transform:translateY(-2px);}
+.btn-white{padding:16px 36px;border:2px solid rgba(255,255,255,.3);color:var(--blanc);font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;text-decoration:none;border-radius:8px;transition:all .2s;}
+.btn-white:hover{border-color:var(--blanc);}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;}
+.stat-box{background:rgba(255,255,255,.05);padding:24px;text-align:center;border:1px solid rgba(255,255,255,.08);}
+.stat-n{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--blanc);}
+.stat-l{font-size:.75rem;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-top:4px;}
+
+.hero-right{position:relative;z-index:1;}
+.urgence-card{background:var(--blanc);border-radius:16px;padding:40px;box-shadow:0 40px 80px rgba(0,0,0,.3);}
+.uc-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--titre);margin-bottom:8px;}
+.uc-sub{font-size:.85rem;color:var(--texte);margin-bottom:24px;}
+.uc-form{display:flex;flex-direction:column;gap:12px;}
+.uc-input{padding:14px 16px;border:2px solid #e2e8f0;border-radius:8px;font-family:'Mulish',sans-serif;font-size:.9rem;color:var(--titre);outline:none;transition:border .2s;}
+.uc-input:focus{border-color:var(--bleu-vif);}
+.uc-select{padding:14px 16px;border:2px solid #e2e8f0;border-radius:8px;font-family:'Mulish',sans-serif;font-size:.9rem;color:var(--titre);outline:none;background:var(--blanc);}
+.uc-btn{padding:16px;background:var(--orange);color:var(--blanc);font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:background .2s;}
+.uc-btn:hover{background:#ea6c0a;}
+.uc-note{font-size:.75rem;color:var(--texte);text-align:center;margin-top:4px;}
+
+/* SERVICES */
+.services{padding:100px 60px;background:var(--gris);}
+.section-label{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bleu-vif);margin-bottom:12px;font-weight:600;}
+h2{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--titre);letter-spacing:-.02em;margin-bottom:10px;}
+.services-sub{font-size:1rem;color:var(--texte);margin-bottom:60px;max-width:560px;line-height:1.7;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.service-card{background:var(--blanc);border-radius:16px;padding:36px;border:2px solid transparent;transition:all .3s;cursor:default;}
+.service-card:hover{border-color:var(--bleu-vif);transform:translateY(-4px);box-shadow:0 20px 40px rgba(26,58,92,.08);}
+.sc-icon{width:56px;height:56px;background:var(--bleu-clair);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:20px;}
+.sc-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--titre);margin-bottom:10px;}
+.sc-desc{font-size:.875rem;color:var(--texte);line-height:1.8;margin-bottom:20px;}
+.sc-price{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:var(--bleu-vif);font-weight:600;letter-spacing:.05em;}
+
+/* WHY */
+.why{padding:100px 60px;background:var(--blanc);}
+.why-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.why-visual{background:linear-gradient(135deg,var(--bleu),#1e4d8c);border-radius:24px;padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.why-stat{background:rgba(255,255,255,.08);border-radius:12px;padding:28px 20px;text-align:center;}
+.ws-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--blanc);}
+.ws-label{font-size:.75rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;margin-top:6px;line-height:1.4;}
+.why-points{list-style:none;}
+.why-points li{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid #f1f5f9;}
+.why-points li:last-child{border:none;}
+.wp-icon{width:44px;height:44px;background:var(--bleu-clair);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.wp-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--titre);margin-bottom:4px;}
+.wp-desc{font-size:.85rem;color:var(--texte);line-height:1.7;}
+
+/* ZONES */
+.zones{padding:80px 60px;background:var(--bleu);text-align:center;}
+.zones h2{color:var(--blanc);margin-bottom:12px;}
+.zones p{color:rgba(255,255,255,.6);margin-bottom:40px;font-size:.95rem;}
+.zones-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:800px;margin:0 auto;}
+.zone-tag{padding:10px 20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:100px;font-size:.85rem;color:rgba(255,255,255,.7);transition:all .2s;}
+.zone-tag:hover{background:rgba(255,255,255,.15);color:var(--blanc);}
+
+/* FOOTER */
+footer{background:var(--titre);padding:60px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;}
+.f-logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blanc);margin-bottom:12px;}
+.f-logo span{color:var(--orange);}
+.f-sub{font-size:.85rem;color:rgba(255,255,255,.4);line-height:1.7;}
+.f-title{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;font-weight:600;}
+.f-col p,.f-col a{font-size:.875rem;color:rgba(255,255,255,.45);line-height:1.9;text-decoration:none;display:block;}
+.f-col a:hover{color:var(--blanc);}
+.f-bottom{background:rgba(0,0,0,.3);padding:20px 60px;display:flex;justify-content:space-between;}
+.f-bottom p{font-size:.75rem;color:rgba(255,255,255,.2);}
+
+@media(max-width:768px){.urgence{font-size:.75rem;}nav{padding:0 20px;}.nav-links{display:none;}.hero{grid-template-columns:1fr;padding:60px 20px;}.hero-stats{grid-template-columns:repeat(3,1fr);}.services,.why,.zones{padding:60px 20px;}.services-grid{grid-template-columns:1fr;}.why-inner{grid-template-columns:1fr;}.why-visual{grid-template-columns:1fr 1fr;}.zones-tags{justify-content:flex-start;}footer{grid-template-columns:1fr;padding:40px 20px;gap:32px;}.f-bottom{padding:20px;flex-direction:column;gap:8px;}}
+</style>
+</head>
+<body>
+
+<div class="urgence">🔧 Urgence plomberie 24h/24 — <a href="tel:+33145678901">01 45 67 89 01</a> · Intervention en moins d'1h à Paris</div>
+
+<nav>
+  <div class="logo">Pro<span>Fix</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Pourquoi nous</a></li>
+    <li><a href="#zones">Zones</a></li>
+  </ul>
+  <a href="tel:+33145678901" class="nav-tel">
+    <span>📞 01 45 67 89 01</span>
+  </a>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="hero-trust">
+      <div class="trust-badge"><div class="dot"></div>RGE Certifié</div>
+      <div class="trust-badge"><div class="dot"></div>Devis gratuit</div>
+      <div class="trust-badge"><div class="dot"></div>Garantie 2 ans</div>
+      <div class="trust-badge"><div class="dot"></div>Intervention rapide</div>
+    </div>
+    <h1>Plombier & Chauffagiste<br><span>de confiance</span><br>à Paris</h1>
+    <p class="hero-desc">Fuite, chauffe-eau en panne, installation, rénovation — nous intervenons rapidement et proprement. Devis gratuit sous 2h.</p>
+    <div class="hero-btns">
+      <a href="tel:+33145678901" class="btn-orange">Appeler maintenant</a>
+      <a href="#services" class="btn-white">Nos prestations</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="stat-n">2000+</div>
+        <div class="stat-l">Clients satisfaits</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-n">15 ans</div>
+        <div class="stat-l">D'expérience</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-n">4.9⭐</div>
+        <div class="stat-l">Note Google</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="urgence-card">
+      <div class="uc-title">Demander un devis gratuit</div>
+      <p class="uc-sub">Réponse garantie sous 2 heures en semaine.</p>
+      <div class="uc-form">
+        <input class="uc-input" type="text" placeholder="Votre nom">
+        <input class="uc-input" type="tel" placeholder="Votre téléphone">
+        <select class="uc-select">
+          <option value="" disabled selected>Type d'intervention</option>
+          <option>Fuite d'eau urgente</option>
+          <option>Installation chauffe-eau</option>
+          <option>Débouchage canalisation</option>
+          <option>Radiateur / chauffage</option>
+          <option>Salle de bain / douche</option>
+          <option>Autre</option>
+        </select>
+        <button class="uc-btn">Demander un devis gratuit →</button>
+        <p class="uc-note">🔒 Vos données sont confidentielles. Sans engagement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="services">
+  <div class="section-label">Ce que nous faisons</div>
+  <h2>Nos services</h2>
+  <p class="services-sub">Plomberie générale, chauffage, sanitaires — nous prenons en charge tout ce qui concerne l'eau et le chauffage dans votre logement.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="sc-icon">💧</div>
+      <div class="sc-name">Fuite & Dépannage urgence</div>
+      <p class="sc-desc">Fuite d'eau, canalisation bouchée, robinet qui coule — intervention en moins d'1h sur Paris et petite couronne.</p>
+      <div class="sc-price">⚡ Intervention urgente disponible</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">🚿</div>
+      <div class="sc-name">Salle de bain & Sanitaires</div>
+      <p class="sc-desc">Installation complète ou remplacement de douche, baignoire, WC, lavabo. Pose carrelage incluse sur devis.</p>
+      <div class="sc-price">À partir de 150€</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">🔥</div>
+      <div class="sc-name">Chauffe-eau & Ballon</div>
+      <p class="sc-desc">Remplacement, installation ou entretien de votre chauffe-eau électrique, thermodynamique ou gaz.</p>
+      <div class="sc-price">À partir de 200€ (pose)</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">🌡️</div>
+      <div class="sc-name">Chauffage & Radiateurs</div>
+      <p class="sc-desc">Installation, remplacement de radiateurs, purge, dépannage chaudière. Certifié RGE pour les aides de l'État.</p>
+      <div class="sc-price">Devis gratuit</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">🏗️</div>
+      <div class="sc-name">Rénovation complète</div>
+      <p class="sc-desc">Réfection totale de la plomberie d'un appartement lors d'une rénovation. Coordination avec les autres corps de métier.</p>
+      <div class="sc-price">Devis sur mesure</div>
+    </div>
+    <div class="service-card">
+      <div class="sc-icon">🔍</div>
+      <div class="sc-name">Diagnostic & Détection</div>
+      <p class="sc-desc">Recherche de fuite non apparente par caméra ou thermographie. Rapport détaillé fourni.</p>
+      <div class="sc-price">À partir de 120€</div>
+    </div>
+  </div>
+</section>
+
+<section id="why" class="why">
+  <div class="why-inner">
+    <div class="why-visual">
+      <div class="why-stat">
+        <div class="ws-num">24/7</div>
+        <div class="ws-label">Disponible pour urgences</div>
+      </div>
+      <div class="why-stat">
+        <div class="ws-num">1h</div>
+        <div class="ws-label">Délai d'intervention max</div>
+      </div>
+      <div class="why-stat">
+        <div class="ws-num">100%</div>
+        <div class="ws-label">Satisfaction garantie</div>
+      </div>
+      <div class="why-stat">
+        <div class="ws-num">2 ans</div>
+        <div class="ws-label">Garantie sur travaux</div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Pourquoi nous choisir</div>
+      <h2>Transparence et qualité avant tout</h2>
+      <ul class="why-points" style="margin-top:32px;">
+        <li>
+          <div class="wp-icon">💶</div>
+          <div>
+            <div class="wp-title">Devis gratuit et détaillé</div>
+            <p class="wp-desc">Nous vous remettons un devis clair avant de commencer. Aucune mauvaise surprise sur la facture finale.</p>
+          </div>
+        </li>
+        <li>
+          <div class="wp-icon">🧹</div>
+          <div>
+            <div class="wp-title">Chantier propre garanti</div>
+            <p class="wp-desc">Nous protégeons votre logement et laissons le chantier propre à notre départ. Toujours.</p>
+          </div>
+        </li>
+        <li>
+          <div class="wp-icon">📋</div>
+          <div>
+            <div class="wp-title">Certifié et assuré</div>
+            <p class="wp-desc">RGE certifié, décennal assurée. Vous pouvez faire valoir les aides de l'État sur nos travaux éligibles.</p>
+          </div>
+        </li>
+        <li>
+          <div class="wp-icon">⭐</div>
+          <div>
+            <div class="wp-title">4.9/5 sur Google</div>
+            <p class="wp-desc">Plus de 300 avis clients vérifiés. Nous construisons notre réputation chantier par chantier.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="zones" class="zones">
+  <div class="section-label" style="color:rgba(255,255,255,.5);">Zones d'intervention</div>
+  <h2>Nous intervenons dans tout Paris</h2>
+  <p>Et dans toute la petite couronne (92, 93, 94)</p>
+  <div class="zones-tags">
+    <div class="zone-tag">Paris 1er–20e</div>
+    <div class="zone-tag">Boulogne-Billancourt</div>
+    <div class="zone-tag">Neuilly-sur-Seine</div>
+    <div class="zone-tag">Vincennes</div>
+    <div class="zone-tag">Saint-Denis</div>
+    <div class="zone-tag">Montreuil</div>
+    <div class="zone-tag">Levallois-Perret</div>
+    <div class="zone-tag">Issy-les-Moulineaux</div>
+    <div class="zone-tag">Créteil</div>
+    <div class="zone-tag">Fontenay-sous-Bois</div>
+    <div class="zone-tag">Vincennes</div>
+    <div class="zone-tag">Ivry-sur-Seine</div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="f-logo">Pro<span>Fix</span></div>
+    <p class="f-sub">Plombier & chauffagiste certifié RGE.<br>Paris et petite couronne.<br>Urgences 24h/24, 7j/7.</p>
+  </div>
+  <div class="f-col">
+    <div class="f-title">Services</div>
+    <a href="#">Fuite & urgences</a>
+    <a href="#">Salle de bain</a>
+    <a href="#">Chauffe-eau</a>
+    <a href="#">Chauffage</a>
+    <a href="#">Rénovation</a>
+  </div>
+  <div class="f-col">
+    <div class="f-title">Infos pratiques</div>
+    <p>Lun–Sam : 7h – 20h</p>
+    <p>Urgences : 24h/24</p>
+    <p>Devis gratuit sous 2h</p>
+  </div>
+  <div class="f-col">
+    <div class="f-title">Contact</div>
+    <a href="tel:+33145678901">01 45 67 89 01</a>
+    <a href="mailto:contact@profix-paris.fr">contact@profix-paris.fr</a>
+    <p>Paris & petite couronne</p>
+  </div>
+</footer>
+<div class="f-bottom">
+  <p>© 2024 ProFix — Plombier Paris — Tous droits réservés</p>
+  <p>Site réalisé avec soin</p>
+</div>
+</body>
+</html>
